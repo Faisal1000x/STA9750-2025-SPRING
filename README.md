@@ -1,5 +1,3 @@
-# STA9750-2025-SPRING
-This is where I shall be doing my assignments for STA9750-2025-SPRING
 # Welcome to My Website!  
 
 ## About Me  
