@@ -18,7 +18,7 @@ I am currently pursuing a **Master of Science in Business Analytics at Baruch Co
 - **ANOS Capital** (Internship) – Enhancing CRM efficiency, optimizing capital market outreach, and engaging with capital prospects.  
 
 ### 💡 Entrepreneurial Ventures  
-Beyond finance, I am actively building **BookEcon.com**, an **accounts outsourcing venture** streamlining financial services for US-based clients from Mumbai.  
+Beyond finance, I have founded Solution Entreprises which is in givernment contract back in mumbai and currently I am actively building **BookEcon.com**, an **accounts outsourcing venture** streamlining financial services for US-based clients from Mumbai.  
 
 ### 🔍 How I Add Value  
 With my blend of **financial expertise, business analytics, and strategic problem-solving**, I aim to contribute to organizations that rely on **data-driven decision-making and investment insights**.  
