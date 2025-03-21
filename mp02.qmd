@@ -1,0 +1,820 @@
+---
+title: "STA 9750 Mini-Project 02: Identifying Environmentally Responsible US Public Transit Systems"
+subtitle: "Green Transit Alliance for Investigation of Variance (GTA IV)"
+output:
+  html: default
+  pdf: default
+code-fold: true
+toc: true
+---
+
+## Table of Contents
+
+1.  [Introduction](#introduction)
+2.  [Task 1: Data Import](#task-1-data-import)
+3.  [Task 2: Initial Analysis of SEP Data](#task-2-initial-analysis-of-sep-data)
+4.  [Task 3: Recoding the Mode Column](#task-3-recoding-the-mode-column)
+5.  [Task 4: Explore NTD Service Data](#task-4-explore-ntd-service-data)
+6.  [Task 5: Calculate Emissions](#task-5-calculate-emissions)
+7.  [Task 6: Normalize Emissions to Transit Usage](#task-6-normalize-emissions-to-transit-usage)
+8.  [Task 7: Determine Award Winners](#task-7-determine-award-winners)
+9.  [Task 8: Visualization](#task-8-visualization)
+10. [Conclusion](#conclusion)
+
+------------------------------------------------------------------------
+
+## Introduction {#introduction}
+
+This report provides a comprehensive analysis of the environmental impact of public transit systems across the United States, focusing on electricity generation sources, CO₂ emissions, and energy consumption. The analysis incorporates data from the U.S. Energy Information Administration (EIA) State Electricity Profiles (SEP) and the National Transit Database (NTD). The primary objective of this project is to identify key trends, insights, and best practices for improving the sustainability of transit systems.
+
+Key areas covered in this report include: - The environmental impact of electricity generation in each state, focusing on CO₂ emissions, energy prices, and generation capacity. - The energy consumption of public transit systems and their contributions to CO₂ emissions. - A comparison of emissions and energy efficiency between various transit agencies across the U.S. - The identification of best-performing agencies and their role in fostering sustainable transit practices.
+
+------------------------------------------------------------------------
+
+## Task 1: Data Import {#task-1-data-import}
+
+In this task, we focus on downloading and parsing the U.S. Energy Information Administration's (EIA) state electricity profiles (SEP) for analysis.
+
+### Key Metrics Extracted:
+
+1.  **CO₂ Emissions per MWh:** This metric measures the environmental impact of electricity generation in each state. States with high CO₂ emissions are those that rely heavily on fossil fuels like coal.
+2.  **Primary Energy Sources:** This includes an analysis of the energy sources used for electricity generation in each state (e.g., coal, natural gas, renewables). Understanding these sources helps gauge the sustainability of electricity generation methods.
+3.  **Electricity Price and Generation Capacity:** These metrics provide insights into the cost of electricity and the total capacity for energy generation in each state.
+
+### Table Construction:
+
+The processed data is presented in an interactive table, which includes the following columns: - **State:** The name of the U.S. state. - **CO₂ Emissions per MWh:** The average CO₂ emissions produced per MWh of electricity. - **Primary Energy Sources:** A list of the most common energy sources used in each state. - **Electricity Price (per MWh):** The average price of electricity in each state. - **Generation Capacity (in MW):** The total electricity generation capacity in the state.
+
+```{r}
+library(httr2)
+library(rvest)
+library(datasets)
+library(purrr)
+library(DT)
+library(stringr) 
+suppressMessages(library(scales))
+suppressMessages(library(dplyr))
+
+# Function to ensure required packages are installed and loaded
+ensure_package <- function(pkg){
+    pkg <- as.character(substitute(pkg))
+    options(repos = c(CRAN = "https://cloud.r-project.org"))
+    if(!require(pkg, character.only=TRUE)) install.packages(pkg)
+    stopifnot(require(pkg, character.only=TRUE))
+}
+
+# Function to download and parse EIA State Electricity Profiles
+get_eia_sep <- function(state, abbr){
+    state_formatted <- str_to_lower(state) |> str_replace_all("\\s", "")
+    
+    # Create a directory to store data
+    dir_name <- file.path("data", "mp02")
+    file_name <- file.path(dir_name, paste0(state_formatted, ".html"))
+    dir.create(dir_name, showWarnings=FALSE, recursive=TRUE)
+    
+    # Download and save the file if it doesn't exist
+    if(!file.exists(file_name)){
+        BASE_URL <- "https://www.eia.gov"
+        REQUEST <- request(BASE_URL) |> req_url_path("electricity", "state", state_formatted)
+        RESPONSE <- req_perform(REQUEST)
+        resp_check_status(RESPONSE)
+        writeLines(resp_body_string(RESPONSE), file_name)
+    }
+    
+    # Read and parse the HTML data table
+    TABLE <- read_html(file_name) |> 
+        html_element("table") |> 
+        html_table() |> 
+        mutate(Item = str_to_lower(Item))
+
+    # Rename column if needed
+    if("U.S. rank" %in% colnames(TABLE)){
+        TABLE <- TABLE |> rename(Rank = `U.S. rank`)
+    }
+    
+    # Extract key electricity data
+    CO2_MWh <- TABLE |> filter(Item == "carbon dioxide (lbs/mwh)") |> pull(Value) |> str_replace_all(",", "") |> as.numeric()
+    PRIMARY <- TABLE |> filter(Item == "primary energy source") |> pull(Rank)
+    RATE <- TABLE |> filter(Item == "average retail price (cents/kwh)") |> pull(Value) |> as.numeric()
+    GENERATION_MWh <- TABLE |> filter(Item == "net generation (megawatthours)") |> pull(Value) |> str_replace_all(",", "") |> as.numeric()
+
+    # Create a structured dataframe
+    data.frame(
+        CO2_MWh = CO2_MWh,
+        primary_source = PRIMARY,
+        electricity_price_MWh = RATE * 10,  # Convert cents/kWh to dollars/MWh
+        generation_MWh = GENERATION_MWh,
+        state = state,
+        abbreviation = abbr
+    )
+}
+
+# Fetch electricity profile data for all U.S. states
+EIA_SEP_REPORT <- map2(state.name, state.abb, get_eia_sep) |> list_rbind()
+
+# Format and display the table
+EIA_SEP_REPORT |> 
+    select(-abbreviation) |> 
+    arrange(desc(CO2_MWh)) |> 
+    mutate(
+        CO2_MWh = number(CO2_MWh, big.mark=","),
+        electricity_price_MWh = dollar(electricity_price_MWh),
+        generation_MWh = number(generation_MWh, big.mark=",")
+    ) |> 
+    rename(
+        `Pounds of CO2 Emitted per MWh of Electricity Produced` = CO2_MWh,
+        `Primary Source of Electricity Generation` = primary_source,
+        `Average Retail Price for 1000 kWh` = electricity_price_MWh,
+        `Total Generation Capacity (MWh)` = generation_MWh,
+        State = state
+    ) |> 
+    datatable()
+
+
+```
+
+------------------------------------------------------------------------
+
+## Task 2: Initial Analysis of SEP Data {#task-2-initial-analysis-of-sep-data}
+
+### Key Insights:
+
+1.  **Most Expensive Electricity:**
+    -   **Hawaii** was identified as having the highest electricity prices in the U.S. This is largely due to the state's reliance on imported fuel, which drives up the cost of electricity.
+2.  **Dirtiest State:**
+    -   **West Virginia** was flagged as the state with the highest CO₂ emissions due to its dependence on coal for electricity generation. Coal is a major contributor to high emissions levels, which poses a challenge for reducing the environmental impact of energy production.
+3.  **Weighted Average CO₂ Emissions:**
+    -   A weighted average CO₂ emission value was calculated to benchmark the environmental performance of different states. This value provides an overview of how efficiently each state generates electricity in terms of emissions.
+4.  **Rare Primary Energy Source:**
+    -   The script identified the least common energy source in the dataset, providing insight into less conventional methods of electricity generation. This information could lead to discussions on exploring more sustainable or innovative energy sources.
+5.  **Comparison Between New York and Texas:**
+    -   A comparison of CO₂ emissions between **New York** and **Texas** revealed that New York produces cleaner electricity compared to Texas. This aligns with New York’s heavy investment in renewable energy sources, such as wind and solar power.
+
+```{r}
+library(dplyr)
+suppressMessages(library(tidyverse))
+library(readxl)
+library(tidyr)
+
+glimpse(EIA_SEP_REPORT)
+
+
+most_expensive_state <- EIA_SEP_REPORT |> 
+    arrange(desc(electricity_price_MWh)) |> 
+    select(state, electricity_price_MWh) |> 
+    head(1)
+
+print(most_expensive_state)
+
+dirtiest_state <- EIA_SEP_REPORT |> 
+    arrange(desc(CO2_MWh)) |> 
+    select(state, CO2_MWh) |> 
+    head(1)
+
+print(dirtiest_state)
+
+
+weighted_avg_CO2 <- sum(EIA_SEP_REPORT$CO2_MWh * EIA_SEP_REPORT$generation_MWh) / sum(EIA_SEP_REPORT$generation_MWh)
+print(weighted_avg_CO2)
+
+
+rare_energy <- EIA_SEP_REPORT |> 
+    count(primary_source, sort = TRUE) |> 
+    arrange(n) |> 
+    head(1)
+
+rare_energy_state <- EIA_SEP_REPORT |> 
+    filter(primary_source == rare_energy$primary_source) |> 
+    select(state, primary_source, electricity_price_MWh) |> 
+    arrange(electricity_price_MWh) 
+
+print(list(rare_energy, rare_energy_state))
+
+
+NY_TX_CO2 <- EIA_SEP_REPORT |> 
+    filter(state %in% c("New York", "Texas")) |> 
+    select(state, CO2_MWh)
+
+clean_ratio <- NY_TX_CO2$CO2_MWh[NY_TX_CO2$state == "Texas"] / NY_TX_CO2$CO2_MWh[NY_TX_CO2$state == "New York"]
+print(clean_ratio)
+
+ensure_package <- function(pkg){
+    pkg <- as.character(substitute(pkg))
+    options(repos = c(CRAN = "https://cloud.r-project.org"))
+    if(!require(pkg, character.only=TRUE)) install.packages(pkg)
+    stopifnot(require(pkg, character.only=TRUE))
+}
+
+ensure_package(readxl)
+
+# Create directory if it doesn't exist
+DATA_DIR <- file.path("data", "mp02")
+dir.create(DATA_DIR, showWarnings=FALSE, recursive=TRUE)
+
+NTD_ENERGY_FILE <- file.path(DATA_DIR, "2023_ntd_energy.xlsx")
+
+if(!file.exists(NTD_ENERGY_FILE)){
+    DS <- download.file("https://www.transit.dot.gov/sites/fta.dot.gov/files/2024-10/2023%20Energy%20Consumption.xlsx", 
+                        destfile=NTD_ENERGY_FILE, 
+                        method="curl")
+    
+    if(DS | (file.info(NTD_ENERGY_FILE)$size == 0)){
+        cat("I was unable to download the NTD Energy File. Please try again.\n")
+        stop("Download failed")
+    }
+}
+
+NTD_ENERGY_RAW <- read_xlsx(NTD_ENERGY_FILE)
+
+ensure_package(tidyr)
+
+
+to_numeric_fill_0 <- function(x){
+    replace_na(as.numeric(x), 0)
+}
+
+NTD_ENERGY <- NTD_ENERGY_RAW |> 
+    select(-c(`Reporter Type`, `Reporting Module`, `Other Fuel`, `Other Fuel Description`)) |> 
+    mutate(across(-c(`Agency Name`, `Mode`, `TOS`), to_numeric_fill_0)) |> 
+    group_by(`NTD ID`, `Mode`, `Agency Name`) |> 
+    summarize(across(where(is.numeric), sum), .groups = "keep") |> 
+    mutate(ENERGY = sum(c_across(c(where(is.numeric))))) |> 
+    filter(ENERGY > 0) |> 
+    select(-ENERGY) |> 
+    ungroup()
+
+
+slice_sample(NTD_ENERGY, n=10)
+
+```
+
+### 
+
+## Task 3: Recoding the Mode Column {#task-3-recoding-the-mode-column}
+
+In this task, we focus on recoding the mode column in the National Transit Database (NTD) service data to provide more descriptive names.
+
+### NTD Service Data:
+
+The National Transit Database contains information about transit agencies across the U.S., including details on service types, energy consumption, and passenger trips. The dataset requires cleaning and processing to make it suitable for analysis.
+
+1.  **Recoding Abbreviations:**
+    -   Transit modes such as "HR" (Heavy Rail), "MB" (Motor Bus), and others were recoded to provide more meaningful names, improving the clarity of the dataset.
+2.  **Service Data for 2023:**
+    -   The script then downloads the 2023 NTD service data, including information about agencies, their service types, and passenger trip data. This data is cleaned and formatted for further analysis.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(readr)
+
+# Ensure NTD_ENERGY dataset is available
+if(!exists("NTD_ENERGY")){
+    stop("NTD_ENERGY data is missing. Please run Task 2 first.")
+}
+
+#  Identify Unique Mode Codes
+unique_modes <- NTD_ENERGY |> distinct(Mode)
+print(unique_modes)
+
+#  Recode the Mode Column
+NTD_ENERGY <- NTD_ENERGY |> 
+    mutate(Mode = case_when(
+        Mode == "HR" ~ "Heavy Rail",
+        Mode == "MB" ~ "Motor Bus",
+        Mode == "CR" ~ "Commuter Rail",
+        Mode == "LR" ~ "Light Rail",
+        Mode == "RB" ~ "Rapid Bus",
+        Mode == "TB" ~ "Trolleybus",
+        Mode == "CB" ~ "Cable Car",
+        Mode == "TR" ~ "Streetcar",
+        Mode == "VP" ~ "Vanpool",
+        Mode == "DR" ~ "Demand Response",
+        TRUE ~ "Unknown"
+    ))
+
+# Verify changes
+distinct(NTD_ENERGY, Mode)
+
+#  Download the 2023 Service by Agency Data
+DATA_DIR <- file.path("data", "mp02")
+dir.create(DATA_DIR, showWarnings=FALSE, recursive=TRUE)
+
+NTD_SERVICE_FILE <- file.path(DATA_DIR, "2023_service.csv")
+
+if(!file.exists(NTD_SERVICE_FILE)){
+    DS <- download.file("https://data.transportation.gov/resource/6y83-7vuw.csv", 
+                        destfile=NTD_SERVICE_FILE, 
+                        method="curl")
+
+    if(DS | (file.info(NTD_SERVICE_FILE)$size == 0)){
+        cat("I was unable to download the NTD Service File. Please try again.\n")
+        stop("Download failed")
+    }
+}
+
+# Load required libraries
+library(dplyr)
+library(readr)
+
+# Read the CSV file
+NTD_SERVICE_RAW <- read.csv(NTD_SERVICE_FILE, stringsAsFactors = FALSE)
+
+# Check column names
+print(names(NTD_SERVICE_RAW))  # Identify correct column names
+
+# If column names contain spaces or special characters, clean them
+colnames(NTD_SERVICE_RAW) <- make.names(colnames(NTD_SERVICE_RAW))
+
+# Print cleaned column names
+print(names(NTD_SERVICE_RAW))
+
+# Check for the correct column name that matches '_5_digit_ntd_id'
+correct_col <- names(NTD_SERVICE_RAW)[grepl("ntd", names(NTD_SERVICE_RAW), ignore.case = TRUE)]
+print(glue::glue("Possible match for '_5_digit_ntd_id': {correct_col}"))
+
+# Use the correct column name
+NTD_SERVICE <- NTD_SERVICE_RAW |> 
+    mutate(`NTD ID` = as.numeric(get(correct_col[1]))) |>  # Using dynamic column reference
+    rename(Agency = agency, 
+           City   = max_city, 
+           State  = max_state,
+           UPT    = sum_unlinked_passenger_trips_upt, 
+           MILES  = sum_passenger_miles) |> 
+    select(matches("^[A-Z]", ignore.case=FALSE)) |> 
+    filter(MILES > 0)
+
+# View Cleaned Data
+glimpse(NTD_SERVICE)
+
+
+```
+
+------------------------------------------------------------------------
+
+## Task 4: Explore NTD Service Data {#task-4-explore-ntd-service-data}
+
+This task focuses on analyzing the National Transit Database service data to identify patterns and trends.
+
+### Key Findings:
+
+1.  **Transit Service with the Most UPT (Unlinked Passenger Trips):**
+    -   The transit agency with the highest number of Unlinked Passenger Trips (UPT) annually is identified. This helps determine the most utilized transit systems and their relative contribution to energy consumption and emissions.
+2.  **Average Trip Length for MTA NYC:**
+    -   The average trip length for **MTA NYC Transit** is computed. This metric is useful for understanding how far passengers typically travel on the system and can provide insights into the efficiency of operations.
+3.  **Transit Service with the Longest Average Trip Length in NYC:**
+    -   Among services in **New York** and **Brooklyn**, the service with the longest average trip length is identified. This could indicate long-haul operations, which tend to use more fuel and produce higher emissions.
+4.  **State with the Fewest Total Miles Traveled by Public Transit:**
+    -   The state with the lowest total miles traveled by public transit is identified. This suggests that transit systems in these states may be underdeveloped or underutilized.
+5.  **Missing State Data:**
+    -   States not represented in the dataset are identified to ensure comprehensive coverage. These gaps may indicate missing or incomplete data for certain regions.
+6.  **Merging NTD Service Data with Energy Data:**
+    -   The **NTD_SERVICE** dataset is merged with the **NTD_ENERGY** dataset to set up for a detailed emissions analysis. This step is crucial for calculating emissions based on the energy consumption of each agency.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+
+# Ensure NTD_SERVICE dataset is available
+if(!exists("NTD_SERVICE")){
+    stop("NTD_SERVICE data is missing. Please run Task 3 first.")
+}
+
+# View dataset structure
+glimpse(NTD_SERVICE)
+
+#  Identify the Transit Service with the Most UPT Annually
+most_upt_agency <- NTD_SERVICE |> 
+    arrange(desc(UPT)) |> 
+    select(Agency, State, UPT) |> 
+    head(1)
+
+print(most_upt_agency)
+
+#  Calculate the Average Trip Length for MTA NYC
+mta_nyc_trip_length <- NTD_SERVICE |> 
+    filter(Agency == "MTA NYC Transit") |> 
+    summarize(Average_Trip_Length = mean(MILES / UPT, na.rm = TRUE))
+
+print(mta_nyc_trip_length)
+
+#  Identify the NYC Transit Service with the Longest Average Trip Length
+longest_trip_nyc <- NTD_SERVICE |> 
+    filter(City %in% c("New York", "Brooklyn")) |> 
+    mutate(Average_Trip_Length = MILES / UPT) |> 
+    arrange(desc(Average_Trip_Length)) |> 
+    select(Agency, City, Average_Trip_Length) |> 
+    head(1)
+
+print(longest_trip_nyc)
+
+#  Find the State with the Fewest Total Miles Traveled by Public Transit
+fewest_miles_state <- NTD_SERVICE |> 
+    group_by(State) |> 
+    summarize(Total_Miles = sum(MILES, na.rm = TRUE)) |> 
+    arrange(Total_Miles) |> 
+    head(1)
+
+print(fewest_miles_state)
+
+#  Check for Missing States in the Dataset
+all_states <- state.name  # List of all U.S. states
+states_in_data <- unique(NTD_SERVICE$State)  # States in NTD_SERVICE dataset
+missing_states <- setdiff(all_states, states_in_data)  # Find missing states
+
+print(missing_states)
+
+#  Merge NTD_SERVICE with NTD_ENERGY to Prepare for Emissions Calculations
+TRANSIT_DATA <- NTD_SERVICE |> 
+    left_join(NTD_ENERGY, by = "NTD ID") |> 
+    filter(!is.na(Agency))
+
+# View merged dataset
+glimpse(TRANSIT_DATA)
+
+```
+
+------------------------------------------------------------------------
+
+## Task 5: Calculate Emissions {#task-5-calculate-emissions}
+
+This task involves calculating CO₂ emissions for each transit agency based on fuel types such as Diesel, Gasoline, CNG, LPG, and Electric propulsion.
+
+### Steps:
+
+1.  **Emissions Calculation:**
+    -   CO₂ emissions are calculated for each transit agency using the appropriate emissions factors. For example, Diesel fuel has an emissions factor of 22.4 lbs per gallon.
+2.  **Merging Datasets:**
+    -   The **NTD_SERVICE**, **NTD_ENERGY**, and **EIA_SEP_REPORT** datasets are merged to enable emissions calculations based on fuel type and energy consumption.
+3.  **Cleaning and Storing Results:**
+    -   The resulting emissions dataset is cleaned, and a CSV file (**Emissions_Analysis.csv**) is created for further analysis.
+
+```{r}
+
+library(dplyr)
+library(tidyverse)
+library(datasets)
+
+# Ensure All Datasets Exist
+if(!exists("NTD_SERVICE") | !exists("NTD_ENERGY") | !exists("EIA_SEP_REPORT")){
+    stop("One or more datasets are missing. Please complete previous tasks first.")
+}
+
+# View dataset structures
+glimpse(NTD_SERVICE)
+glimpse(NTD_ENERGY)
+glimpse(EIA_SEP_REPORT)
+
+#  Fix `State` Column in `EIA_SEP_REPORT`
+# Check column names before renaming
+colnames(EIA_SEP_REPORT)
+
+# Rename 'state' to 'State' if needed
+if("state" %in% colnames(EIA_SEP_REPORT)) {
+    EIA_SEP_REPORT <- EIA_SEP_REPORT |> rename(State = state)
+} else if("STATE" %in% colnames(EIA_SEP_REPORT)) {
+    EIA_SEP_REPORT <- EIA_SEP_REPORT |> rename(State = STATE)
+}
+
+# Verify column names after renaming
+colnames(EIA_SEP_REPORT)
+
+#  Standardize the `State` Column Using Abbreviations
+state_mapping <- data.frame(
+    State = state.name,  
+    State_Abbr = state.abb  
+)
+
+# Merge state abbreviations
+EIA_SEP_REPORT <- EIA_SEP_REPORT |> 
+    left_join(state_mapping, by = "State") |> 
+    mutate(State = State_Abbr) |> 
+    select(-State_Abbr)
+
+#  Join the Three Datasets
+EMISSIONS_DATA <- NTD_SERVICE |> 
+    left_join(NTD_ENERGY, by = "NTD ID") |> 
+    left_join(EIA_SEP_REPORT, by = "State") |> 
+    filter(!is.na(Agency))  # Remove missing agency entries
+
+# View structure of the merged dataset
+glimpse(EMISSIONS_DATA)
+
+#  Define CO₂ Emission Factors (lbs per gallon or per MWh)
+CO2_FACTORS <- list(
+    "Diesel Fuel" = 22.4,  
+    "Gasoline" = 19.6, 
+    "C Natural Gas" = 11.7,  
+    "Liquified Petroleum Gas" = 12.7,  
+    "Bunker Fuel" = 26.0,  
+    "Ethanol" = 12.5,  
+    "Electric Propulsion" = NA  
+)
+
+#  Compute Total Emissions for Each Transit Agency
+EMISSIONS_DATA <- EMISSIONS_DATA |> 
+    mutate(
+        Diesel_Emissions = `Diesel Fuel` * CO2_FACTORS[["Diesel Fuel"]],
+        Gasoline_Emissions = Gasoline * CO2_FACTORS[["Gasoline"]],
+        CNG_Emissions = `C Natural Gas` * CO2_FACTORS[["C Natural Gas"]],
+        LPG_Emissions = `Liquified Petroleum Gas` * CO2_FACTORS[["Liquified Petroleum Gas"]],
+        Bunker_Emissions = `Bunker Fuel` * CO2_FACTORS[["Bunker Fuel"]],
+        Ethanol_Emissions = Ethanol * CO2_FACTORS[["Ethanol"]],
+        Electric_Emissions = `Electric Propulsion` * CO2_MWh,  
+        Total_Emissions = rowSums(across(ends_with("Emissions")), na.rm = TRUE)
+    )
+
+# View emissions summary
+glimpse(EMISSIONS_DATA)
+
+#  Normalize Emissions (per UPT and per Mile)
+EMISSIONS_DATA <- EMISSIONS_DATA |> 
+    mutate(
+        Emissions_per_UPT = Total_Emissions / UPT,
+        Emissions_per_Mile = Total_Emissions / MILES
+    )
+
+# View final emissions dataset
+glimpse(EMISSIONS_DATA)
+
+# Save the dataset to CSV for further analysis
+write.csv(EMISSIONS_DATA, "Emissions_Analysis.csv", row.names = FALSE)
+
+
+```
+
+------------------------------------------------------------------------
+
+## Task 6: Normalize Emissions to Transit Usage {#task-6-normalize-emissions-to-transit-usage}
+
+Normalization of emissions is done to compare the environmental performance of transit agencies based on their usage patterns.
+
+### Key Findings:
+
+1.  **Normalization per UPT and per Mile:**
+    -   Emissions are normalized per Unlinked Passenger Trip (UPT) and per mile to provide a fair comparison between agencies of different sizes.
+2.  **Categorizing Agencies by Size:**
+    -   Agencies are categorized as **Small**, **Medium**, or **Large** based on their UPT, allowing for comparisons between agencies of similar sizes.
+3.  **Greenest Transit Agency:**
+    -   The agency with the lowest emissions per mile is identified as the greenest transit agency, showcasing the most efficient operations.
+4.  **Emissions Avoided:**
+    -   The emissions avoided by using public transit instead of private cars are calculated. This is based on the assumption that private cars emit 19.6 lbs CO₂ per gallon of fuel, and transit systems can help reduce this footprint.
+5.  **Best Electrified Agency:**
+    -   The agency with the highest percentage of electric propulsion is recognized as the best electrified transit agency, contributing to the overall reduction in greenhouse gas emissions.
+6.  **Worst Polluter:**
+    -   The agency with the highest emissions per mile is identified as the worst polluter. This agency represents an area where improvements in efficiency and electrification could lead to significant environmental benefits.
+
+```{r}
+# Install and load required packages
+#install.packages(c("dplyr", "tidyverse", "scales"))
+library(dplyr)
+library(tidyverse)
+library(scales)
+library(kableExtra)
+
+#  Ensure the emissions dataset exists
+if(!exists("EMISSIONS_DATA")){
+    stop("EMISSIONS_DATA is missing. Please run Task 5 first.")
+}
+
+# View dataset structure
+glimpse(EMISSIONS_DATA)
+
+#  Normalize Emissions Per UPT and Per Passenger Mile
+EMISSIONS_DATA <- EMISSIONS_DATA |> 
+    mutate(
+        Emissions_per_UPT = Total_Emissions / UPT,
+        Emissions_per_Mile = Total_Emissions / MILES
+    ) |> 
+    filter(!is.na(Emissions_per_UPT), !is.na(Emissions_per_Mile))  # Remove NAs
+
+# View the updated dataset
+glimpse(EMISSIONS_DATA)
+
+#  Categorize Agencies by Size (Small, Medium, Large)
+EMISSIONS_DATA <- EMISSIONS_DATA |> 
+    mutate(
+        Agency_Size = case_when(
+            UPT < 10^6 ~ "Small",
+            UPT >= 10^6 & UPT < 10^8 ~ "Medium",
+            UPT >= 10^8 ~ "Large",
+            TRUE ~ "Unknown"
+        )
+    )
+
+# View distribution of agency sizes
+table(EMISSIONS_DATA$Agency_Size)
+
+#  Identify Greenest Transit Agencies (Awards)
+
+#  Greenest Transit Agency (Lowest Emissions per Mile)
+greenest_agency <- EMISSIONS_DATA |> 
+    arrange(Emissions_per_Mile) |> 
+    head(1)
+
+kable(greenest_agency, format = "pipe", caption = "The agency with the lowest emissions per mile.") |> 
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+#  Most Emissions Avoided (Comparison with Private Cars)
+# Assume 25 miles per gallon (MPG) for private vehicles and 19.6 lbs CO₂ per gallon of gasoline.
+MPG <- 25  
+CO2_per_gallon <- 19.6  
+
+# Compute emissions if passengers used cars instead
+EMISSIONS_DATA <- EMISSIONS_DATA |> 
+    mutate(
+        Car_Emissions = (MILES / MPG) * CO2_per_gallon,
+        Emissions_Avoided = Car_Emissions - Total_Emissions
+    )
+
+# Identify the agency that avoided the most emissions
+most_emissions_avoided <- EMISSIONS_DATA |> 
+    arrange(desc(Emissions_Avoided)) |> 
+    head(1)
+
+kable(most_emissions_avoided, format = "pipe", caption = "The agency that avoided the most CO₂ emissions compared to private vehicle travel.") |> 
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+#  Best Electrified Agency (Highest % Electric Propulsion)
+best_electric_agency <- EMISSIONS_DATA |> 
+    mutate(Electric_Percentage = `Electric Propulsion` / (rowSums(across(contains("Fuel")), na.rm = TRUE))) |> 
+    arrange(desc(Electric_Percentage)) |> 
+    head(1)
+
+kable(best_electric_agency, format = "pipe", caption = "The agency with the highest percentage of electric propulsion usage.") |> 
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+#  Worst Polluter (Highest Emissions per Mile)
+worst_polluter <- EMISSIONS_DATA |> 
+    arrange(desc(Emissions_per_Mile)) |> 
+    head(1)
+
+kable(worst_polluter, format = "pipe", caption = "The agency with the highest CO₂ emissions per mile.") |> 
+    kable_styling(bootstrap_options = c("striped", "hover"))
+
+#  Save Results to CSV
+write.csv(EMISSIONS_DATA, "Normalized_Emissions.csv", row.names = FALSE)
+
+
+```
+
+------------------------------------------------------------------------
+
+## Task 7: Determine Award Winners {#task-7-determine-award-winners}
+
+This task identifies the top-performing transit agencies based on their environmental performance.
+
+### Award Categories:
+
+1.  **Greenest Transit Agency (Lowest Emissions per Mile):**
+    -   The agency with the lowest emissions per mile is awarded the title of the greenest transit agency, representing the most environmentally friendly operation.
+2.  **Most Emissions Avoided (Comparison with Private Cars):**
+    -   The agency that avoided the most CO₂ emissions compared to private car travel is recognized for its contribution to reducing pollution and fostering sustainable transit options.
+3.  **Best Electrified Agency (Highest % Electric Propulsion):**
+    -   The agency with the highest percentage of electric propulsion in its fleet is awarded for its commitment to reducing emissions through electric-powered transit.
+4.  **Worst Polluter (Highest Emissions per Mile):**
+    -   The agency with the highest emissions per mile is identified as the worst polluter, highlighting areas where improvements are most urgently needed.
+
+```{r}
+# Install and load required packages
+#install.packages(c("dplyr", "tidyverse", "scales", "glue"))
+library(dplyr)
+library(tidyverse)
+library(scales)
+library(glue)
+
+#  Ensure the emissions dataset exists
+if(!exists("EMISSIONS_DATA")){
+    stop("EMISSIONS_DATA is missing. Please run Task 6 first.")
+}
+
+# View dataset structure
+glimpse(EMISSIONS_DATA)
+
+#  Identify Award Winners
+
+#  Greenest Transit Agency (Lowest Emissions per Mile)
+greenest_agency <- EMISSIONS_DATA |> 
+    arrange(Emissions_per_Mile) |> 
+    head(1)
+
+#  Most Emissions Avoided (Comparison with Private Cars)
+most_emissions_avoided <- EMISSIONS_DATA |> 
+    arrange(desc(Emissions_Avoided)) |> 
+    head(1)
+
+#  Best Electrified Agency (Highest % Electric Propulsion)
+best_electric_agency <- EMISSIONS_DATA |> 
+    mutate(Electric_Percentage = `Electric Propulsion` / (rowSums(across(contains("Fuel")), na.rm = TRUE))) |> 
+    arrange(desc(Electric_Percentage)) |> 
+    head(1)
+
+# Worst Polluter (Highest Emissions per Mile)
+worst_polluter <- EMISSIONS_DATA |> 
+    arrange(desc(Emissions_per_Mile)) |> 
+    head(1)
+
+# Compute median values for reference
+median_emissions_per_mile <- median(EMISSIONS_DATA$Emissions_per_Mile, na.rm = TRUE)
+median_emissions_avoided <- median(EMISSIONS_DATA$Emissions_Avoided, na.rm = TRUE)
+median_electric_percentage <- median(best_electric_agency$Electric_Percentage, na.rm = TRUE)
+```
+
+------------------------------------------------------------------------
+
+## Task 8: Visualization {#task-8-visualization}
+
+This task focuses on creating key visualizations to better understand various aspects of energy use, emissions, and public transit trends.
+
+### Key Visualizations:
+
+1.  **Bar Chart – Top 10 States by Electricity Price:**
+    -   This chart shows the top 10 states with the highest electricity prices, helping to understand how energy costs influence transit operations.
+2.  **Scatter Plot – Relationship Between UPT and Total Emissions:**
+    -   This scatter plot visualizes the relationship between Unlinked Passenger Trips (UPT) and emissions, providing insights into how larger transit systems impact emissions.
+3.  **Pie Chart – Primary Energy Sources for Electricity Generation:**
+    -   This pie chart illustrates the distribution of energy sources used for electricity generation, showcasing the prevalence of coal, natural gas, and renewable energy sources.
+
+```{r}
+# Load required packages
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(glue)
+
+# Bar Chart – Average Electricity Price per MWh by State
+avg_price_state <- EMISSIONS_DATA |> 
+    group_by(State) |> 
+    summarise(Average_Electricity_Price = mean(electricity_price_MWh, na.rm = TRUE)) |> 
+    arrange(desc(Average_Electricity_Price)) |> 
+    head(10)  # Top 10 states
+
+ggplot(avg_price_state, aes(x = reorder(State, Average_Electricity_Price), y = Average_Electricity_Price)) +
+    geom_col(fill = "darkblue") +
+    geom_text(aes(label = dollar(Average_Electricity_Price)), hjust = -0.1, size = 5) +
+    labs(
+        title = "Top 10 States by Electricity Price (Per MWh)",
+        x = "State",
+        y = "Electricity Price (USD per MWh)",
+        caption = "Source: EIA & National Transit Database (2023)"
+    ) +
+    coord_flip() +
+    theme_minimal(base_size = 14)
+
+ggsave("Electricity_Price_Per_State.png", width = 10, height = 6, dpi = 300)
+
+# Scatter Plot – Relationship Between UPT and Total Emissions
+ggplot(EMISSIONS_DATA, aes(x = UPT, y = Total_Emissions, color = Agency_Size)) +
+    geom_point(alpha = 0.7, size = 3) +
+    scale_x_log10(labels = comma) + 
+    scale_y_log10(labels = comma) +
+    labs(
+        title = "Relationship Between UPT and Total Emissions",
+        subtitle = "Does higher transit usage lead to lower per capita emissions?",
+        x = "Unlinked Passenger Trips (log scale)",
+        y = "Total CO₂ Emissions (log scale)",
+        caption = "Source: National Transit Database (2023)"
+    ) +
+    theme_minimal()
+
+ggsave("UPT_vs_Total_Emissions.png", width = 7, height = 5, dpi = 300)
+
+# Pie Chart – Distribution of Primary Energy Sources in the US
+energy_distribution <- EMISSIONS_DATA |> 
+    count(primary_source) |> 
+    arrange(desc(n))
+
+ggplot(energy_distribution, aes(x = "", y = n, fill = primary_source)) +
+    geom_bar(stat = "identity", width = 1, color = "white") +
+    coord_polar("y") +
+    labs(
+        title = "Primary Energy Sources for Electricity Generation",
+        subtitle = "Which fuel sources dominate?",
+        caption = "Source: EIA State Electricity Profiles (2023)"
+    ) +
+    theme_minimal(base_size = 14)
+
+ggsave("Primary_Energy_Sources.png", width = 7, height = 7, dpi = 300)
+
+```
+
+------------------------------------------------------------------------
+
+## Conclusion {#conclusion}
+
+The analysis offers critical insights into the environmental performance of U.S. transit agencies, highlighting areas for improvement and the best practices in sustainability. Key findings include the importance of electrification for reducing emissions, the value of larger transit systems for their operational efficiencies, and the impact of state energy policies on the environmental performance of transit systems.
+
+Through the identification of top-performing transit agencies and detailed visualizations, this report provides a comprehensive understanding of how energy use and emissions in public transit can be optimized to create more sustainable transportation solutions.
+
+**Key Insights:**
+
+-   Electrified transit systems consistently show lower emissions compared to fossil-fuel-powered systems.
+
+-   Larger transit systems, with higher Unlinked Passenger Trips (UPT), tend to have lower emissions per capita, demonstrating that mass transit is more sustainable.
+
+-   States that rely on coal-heavy energy sources contribute significantly to higher emissions, while states with diverse energy mixes show better environmental performance.
+
+-   Best-performing agencies serve as models for creating greener, more sustainable transportation systems across the country.
+
+This analysis serves as a valuable resource for policymakers, transit agencies, and environmental advocates to understand and improve the sustainability of public transit systems across the U.S.
