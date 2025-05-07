@@ -6,6 +6,11 @@ format:
     toc-location: right
     toc-title: "On this page"
     css: styles.css
+    toc-depth: 3
+    code-fold: show
+    theme: cosmo
+    fig-width: 10
+    fig-height: 6
 ---
 
 # Exploring Recent US Political Shifts
@@ -19,7 +24,7 @@ The analysis incorporates geographic shapefiles for US counties and election res
 
 Ultimately, this project offers a data-driven perspective on how voter preferences may be shifting across the country. These insights can inform political strategists, researchers, and citizens interested in the dynamics of American democracy at the local level.
 
-```{r}
+```{r setup, include=FALSE}
 library(tidyverse)
 library(httr2)
 library(rvest)
@@ -47,7 +52,8 @@ if (!file.exists(zip_file)) {
 
 county_shapes <- sf::read_sf("data/mp04/cb_2022_us_county_500k.shp")
 
-glimpse(county_shapes)
+library(DT)
+datatable(head(county_shapes, 20))
 ```
 This chunk downloads and reads the shapefile containing US county boundaries. It first checks if a directory (`data/mp04`) exists and creates it if needed. It then defines the URL of the shapefile (from the US Census Bureau) and downloads the ZIP file if it's not already present. Once downloaded, the ZIP is extracted, and the shapefile is read using the `sf` package into an object called `county_shapes`. Finally, `glimpse()` provides a quick overview of the dataset’s structure, helping us understand the attributes and geometry data associated with each county.
 
@@ -191,7 +197,7 @@ states <- c(
 
 election_2024 <- map_dfr(states, ~scrape_election_results(.x, "2024"))
 
-head(election_2024)
+datatable(head(election_2024, 5))
 ```
 - Defines a function `scrape_election_results(state_name, election_year)` to extract election results for a given U.S. state and year.
 - Constructs a Wikipedia URL using the state name and year, replacing spaces with underscores for URL compatibility.
@@ -211,7 +217,7 @@ head(election_2024)
 ```{r}
 election_2020 <- map_dfr(states, ~scrape_election_results(.x, "2020"))
 
-head(election_2020)
+datatable(head(election_2020, 5))
 ```
 - This task uses the same `scrape_election_results()` function defined earlier.
 - It loops through the list of all 50 U.S. states using `map_dfr()` from the `purrr` package.
@@ -265,7 +271,7 @@ clean_election_data <- function() {
 
 combined_elections <- clean_election_data()
 
-head(combined_elections)
+datatable(head(combined_elections, 5))
 
 prepare_shapes <- function() {
   county_data <- county_shapes |>
@@ -300,7 +306,7 @@ prepare_shapes <- function() {
 
 county_data <- prepare_shapes()
 
-head(county_data)
+datatable(head(county_data, 5))
 ```
 ### **1. Clean and Merge 2020 and 2024 Election Data**
 - **Function: `clean_election_data()`**
@@ -484,34 +490,72 @@ turnout_increase |>
 
 # Visualization
 ## Task 5: Reproduce NYT Figure
+```{r}
+names(combined_elections)
+```
+
 
 ```{r}
-map_data <- county_shapes |>
+library(dplyr)
+library(sf)
+library(leaflet)
+library(RColorBrewer)
+
+# Make sure your county_shapes is projected properly
+county_shapes <- st_transform(county_shapes, crs = 4326)
+
+# Prepare combined_elections
+combined_elections <- combined_elections |>
   mutate(
-    STATE_NAME = state.name[match(as.numeric(STATEFP), state.abb)],
-    STATE_NAME = ifelse(is.na(STATE_NAME), "District of Columbia", STATE_NAME),
-    COUNTY_NAME = toupper(NAME),
+    COUNTY_NAME = toupper(County),
+    STATE_NAME = toupper(State),
+    FIPS = paste0(STATE_NAME, "_", COUNTY_NAME)
+  )
+
+# Create state abbreviation and full name mapping
+state_df <- data.frame(STATEFP = c(sprintf("%02d", 1:50), "11"),  # include "11" for DC
+                       STATE_ABB = c(state.abb, "DC"),  # append "DC" for District of Columbia
+                       STATE_NAME = c(state.name, "DISTRICT OF COLUMBIA"),  # append DC name
+                       stringsAsFactors = FALSE)
+
+# Ensure there are no duplicates in state_df (should not be necessary, but good to check)
+state_df <- state_df %>%
+  distinct(STATEFP, .keep_all = TRUE)
+
+# Ensure there are no duplicates in county_shapes
+county_shapes <- county_shapes %>%
+  distinct(STATEFP, NAME, .keep_all = TRUE)  # Assuming NAME is a unique county identifier
+
+# Perform the left join and ensure no column name conflicts
+map_data <- county_shapes |>
+  mutate(STATEFP = as.character(STATEFP)) |>
+  left_join(state_df, by = "STATEFP", suffix = c("", "_state"))
+
+# Now mutate the columns based on the correct names
+map_data <- map_data |>
+  mutate(
+    COUNTY_NAME = toupper(NAME),  # Assuming 'NAME' is the county name column
+    STATE_NAME = toupper(ifelse(!is.na(STATE_NAME_state), STATE_NAME_state, "")),  # Ensure STATE_NAME exists and is not NA
     FIPS = paste0(STATE_NAME, "_", COUNTY_NAME)
   ) |>
   left_join(combined_elections, by = "FIPS")
 
+# Check how many counties have valid shift data
 print(paste("Counties with shift data after join:", sum(!is.na(map_data$Trump_shift_pct))))
 
-library(leaflet)
-library(RColorBrewer)
-
+# Define color palette
 pal <- colorNumeric(
   palette = colorRampPalette(c("blue", "white", "red"))(100),
   domain = c(-15, 15),
   na.color = "gray"
 )
 
-map_data |>
-  leaflet() |>
+# Plot map
+leaflet(map_data) |>
   setView(-96, 37.8, zoom = 4) |>
   addProviderTiles(providers$CartoDB.Positron) |>
   addPolygons(
-    fillColor = ~pal(Trump_shift_pct * 100),  # Convert to percentage points
+    fillColor = ~pal(Trump_shift_pct * 100),
     color = "#666666",
     weight = 0.5,
     opacity = 1,
@@ -523,15 +567,15 @@ map_data |>
       bringToFront = TRUE
     ),
     popup = ~paste0(
-      "<strong>", NAME, ", ", STATE_NAME, "</strong><br>",
-      "Shift: ", round(Trump_shift_pct*100, 1), "% ", 
+      "<strong>", NAME, ", ", STATE_NAME_state, "</strong><br>",
+      "Shift: ", round(Trump_shift_pct*100, 1), "% ",
       ifelse(Trump_shift_pct > 0, "toward Trump", "toward Harris")
     )
   ) |>
   addLegend(
     position = "bottomright",
     pal = pal,
-    values = c(-15, 15),
+    values = c(-5, 5),
     title = "Shift toward Trump (%)",
     labFormat = labelFormat(suffix = "%"),
     opacity = 1
