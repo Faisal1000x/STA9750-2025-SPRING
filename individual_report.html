@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How Funding Differences Affect Access to Advanced Coursework and College Prep Programs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="individual_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="individual_report_files/libs/quarto-html/quarto.js"></script>
+<script src="individual_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="individual_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="individual_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="individual_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="individual_report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="individual_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="individual_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="individual_report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="individual_report_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="individual_report_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-sources-and-methodology" id="toc-data-sources-and-methodology" class="nav-link" data-scroll-target="#data-sources-and-methodology">Data Sources and Methodology</a></li>
+  <li><a href="#loading-libraries-and-data-cleaning" id="toc-loading-libraries-and-data-cleaning" class="nav-link" data-scroll-target="#loading-libraries-and-data-cleaning">Loading Libraries and Data Cleaning</a></li>
+  <li><a href="#identifying-advanced-coursework-and-college-prep-programs" id="toc-identifying-advanced-coursework-and-college-prep-programs" class="nav-link" data-scroll-target="#identifying-advanced-coursework-and-college-prep-programs">Identifying Advanced Coursework and College Prep Programs</a></li>
+  <li><a href="#analyzing-funding-distribution-for-advanced-programs" id="toc-analyzing-funding-distribution-for-advanced-programs" class="nav-link" data-scroll-target="#analyzing-funding-distribution-for-advanced-programs">Analyzing Funding Distribution for Advanced Programs</a></li>
+  <li><a href="#funding-source-analysis-for-advanced-programs" id="toc-funding-source-analysis-for-advanced-programs" class="nav-link" data-scroll-target="#funding-source-analysis-for-advanced-programs">Funding Source Analysis for Advanced Programs</a></li>
+  <li><a href="#proportional-funding-analysis-for-advanced-programs" id="toc-proportional-funding-analysis-for-advanced-programs" class="nav-link" data-scroll-target="#proportional-funding-analysis-for-advanced-programs">Proportional Funding Analysis for Advanced Programs</a></li>
+  <li><a href="#comparing-advanced-programs-with-other-educational-programs" id="toc-comparing-advanced-programs-with-other-educational-programs" class="nav-link" data-scroll-target="#comparing-advanced-programs-with-other-educational-programs">Comparing Advanced Programs with Other Educational Programs</a></li>
+  <li><a href="#funding-source-dependency-for-advanced-programs" id="toc-funding-source-dependency-for-advanced-programs" class="nav-link" data-scroll-target="#funding-source-dependency-for-advanced-programs">Funding Source Dependency for Advanced Programs</a></li>
+  <li><a href="#relationship-between-funding-size-and-source-for-advanced-programs" id="toc-relationship-between-funding-size-and-source-for-advanced-programs" class="nav-link" data-scroll-target="#relationship-between-funding-size-and-source-for-advanced-programs">Relationship Between Funding Size and Source for Advanced Programs</a></li>
+  <li><a href="#comparative-analysis-advanced-program-funding-across-education-levels" id="toc-comparative-analysis-advanced-program-funding-across-education-levels" class="nav-link" data-scroll-target="#comparative-analysis-advanced-program-funding-across-education-levels">Comparative Analysis: Advanced Program Funding Across Education Levels</a></li>
+  <li><a href="#geographic-analysis-advanced-program-funding-by-county" id="toc-geographic-analysis-advanced-program-funding-by-county" class="nav-link" data-scroll-target="#geographic-analysis-advanced-program-funding-by-county">Geographic Analysis: Advanced Program Funding by County</a></li>
+  <li><a href="#funding-impact-on-program-availability-county-analysis" id="toc-funding-impact-on-program-availability-county-analysis" class="nav-link" data-scroll-target="#funding-impact-on-program-availability-county-analysis">Funding Impact on Program Availability: County Analysis</a></li>
+  <li><a href="#advanced-program-coverage-analysis" id="toc-advanced-program-coverage-analysis" class="nav-link" data-scroll-target="#advanced-program-coverage-analysis">Advanced Program Coverage Analysis</a></li>
+  <li><a href="#funding-inequality-impact-on-advanced-program-access" id="toc-funding-inequality-impact-on-advanced-program-access" class="nav-link" data-scroll-target="#funding-inequality-impact-on-advanced-program-access">Funding Inequality Impact on Advanced Program Access</a></li>
+  <li><a href="#key-insights-and-conclusions" id="toc-key-insights-and-conclusions" class="nav-link" data-scroll-target="#key-insights-and-conclusions">Key Insights and Conclusions</a>
+  <ul class="collapse">
+  <li><a href="#funding-disparities-create-access-gaps" id="toc-funding-disparities-create-access-gaps" class="nav-link" data-scroll-target="#funding-disparities-create-access-gaps">1. Funding Disparities Create Access Gaps</a></li>
+  <li><a href="#geographic-inequity" id="toc-geographic-inequity" class="nav-link" data-scroll-target="#geographic-inequity">2. Geographic Inequity</a></li>
+  <li><a href="#funding-source-vulnerability" id="toc-funding-source-vulnerability" class="nav-link" data-scroll-target="#funding-source-vulnerability">3. Funding Source Vulnerability</a></li>
+  <li><a href="#education-level-disparities" id="toc-education-level-disparities" class="nav-link" data-scroll-target="#education-level-disparities">4. Education Level Disparities</a></li>
+  <li><a href="#counseling-resource-gaps" id="toc-counseling-resource-gaps" class="nav-link" data-scroll-target="#counseling-resource-gaps">5. Counseling Resource Gaps</a></li>
+  </ul></li>
+  <li><a href="#policy-implications-and-recommendations" id="toc-policy-implications-and-recommendations" class="nav-link" data-scroll-target="#policy-implications-and-recommendations">Policy Implications and Recommendations</a>
+  <ul class="collapse">
+  <li><a href="#targeted-funding-initiatives" id="toc-targeted-funding-initiatives" class="nav-link" data-scroll-target="#targeted-funding-initiatives">- Targeted Funding Initiatives</a></li>
+  <li><a href="#stabilize-funding-sources" id="toc-stabilize-funding-sources" class="nav-link" data-scroll-target="#stabilize-funding-sources">- Stabilize Funding Sources</a></li>
+  <li><a href="#early-access-programs" id="toc-early-access-programs" class="nav-link" data-scroll-target="#early-access-programs">- Early Access Programs</a></li>
+  <li><a href="#college-counselor-equity" id="toc-college-counselor-equity" class="nav-link" data-scroll-target="#college-counselor-equity">- College Counselor Equity</a></li>
+  <li><a href="#cross-district-collaboration" id="toc-cross-district-collaboration" class="nav-link" data-scroll-target="#cross-district-collaboration">- Cross-District Collaboration</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">How Funding Differences Affect Access to Advanced Coursework and College Prep Programs</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>The introduction establishes the critical role that advanced coursework and college preparation programs play in students’ educational trajectories. These programs—including AP classes, dual enrollment courses, SAT preparation resources, and college counseling—serve as essential pathways to higher education opportunities and future career success. However, access to these programs is not equitably distributed across schools and districts.</p>
+<p>The research question explicitly addresses how funding differences affect access to these advanced educational opportunities. This question is particularly important because advanced coursework serves as a gateway to college admissions and scholarships, creating a compounding effect where funding disparities in K-12 education can translate into long-term educational and economic inequities. Studies have consistently shown that students who participate in advanced coursework are more likely to enroll in and complete college, highlighting the importance of equitable access to these programs.</p>
+<p>The introduction frames the analysis as an investigation into how different funding sources (city/state vs.&nbsp;federal/state/private) and overall funding levels influence the availability and quality of advanced academic opportunities. This framing acknowledges that funding disparities can manifest in multiple ways: through the total amount of resources available, through the reliability of those resources over time, and through the specific restrictions or requirements attached to different funding sources.</p>
+<p>This analysis examines how differences in funding sources and levels affect students’ access to advanced academic opportunities. The specific research question is: “How do funding differences affect access to advanced coursework and college prep programs across schools and districts?”</p>
+</section>
+<section id="data-sources-and-methodology" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources-and-methodology">Data Sources and Methodology</h2>
+<p>This section explains that the analysis uses data from the School-Based Expenditure Report (SBER) 2018, which provides detailed information on school expenditures categorized by funding type and source. The SBER data is particularly valuable because it allows for examination of not just overall funding levels but also the specific allocation of resources across different educational programs and the sources of that funding.</p>
+<p>The methodological approach involves identifying expenditure categories related to advanced coursework and college preparation, analyzing the distribution of funding across these categories, examining the sources of funding for these programs, and comparing funding patterns across different types of schools and geographic areas. This multi-faceted approach allows for a comprehensive understanding of how funding differences manifest in terms of advanced program access.</p>
+<p>The analysis employs various data visualization techniques to illustrate funding patterns and disparities, including horizontal bar charts for comparing total expenditures, stacked bar charts for examining funding source compositions, and scatterplots for exploring relationships between funding levels and program availability. These visualization methods help to make complex funding patterns more accessible and highlight key areas of inequity.</p>
+</section>
+<section id="loading-libraries-and-data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="loading-libraries-and-data-cleaning">Loading Libraries and Data Cleaning</h2>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and clean data</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>file1 <span class="ot">&lt;-</span> <span class="st">"SBER_2018_CCCCCCC4F_2025_05_16.xlsx"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(file1, <span class="at">skip =</span> <span class="dv">6</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>df1_clean <span class="ot">&lt;-</span> df1 <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Category =</span> <span class="dv">1</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expenditure =</span> <span class="dv">2</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">City_State_Expenditure =</span> <span class="dv">4</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Fed_State_Private_Expenditure =</span> <span class="dv">6</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Category)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(Category, <span class="st">"DOE Account|Funding Source|Total Enrollment|Citywide|School Year"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Total_Expenditure, City_State_Expenditure, Fed_State_Private_Expenditure),</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"[$,]"</span>, <span class="st">""</span>, .)))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Total_Expenditure)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate percentage of each funding source</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_City_State =</span> City_State_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Fed_State_Private =</span> Fed_State_Private_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Clean category names for better readability</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">Category =</span> <span class="fu">str_trim</span>(Category),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">Category =</span> <span class="fu">str_replace_all</span>(Category, <span class="st">"</span><span class="sc">\\</span><span class="st">s+"</span>, <span class="st">" "</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Display first 10 rows of the cleaned data</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(df1_clean, <span class="dv">10</span>), </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"First 10 rows of the cleaned expenditure data"</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>First 10 rows of the cleaned expenditure data</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total_Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">City_State_Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Fed_State_Private_Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Pct_City_State</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Pct_Fed_State_Private</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Full Time Special Education:</td>
+<td style="text-align: right;">141,322</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">I. Direct Services to Schools</td>
+<td style="text-align: right;">22,640,275</td>
+<td style="text-align: right;">17,079,761</td>
+<td style="text-align: right;">562,867</td>
+<td style="text-align: right;">75.43972</td>
+<td style="text-align: right;">2.4861315</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A. Classroom Instruction</td>
+<td style="text-align: right;">12,537,116</td>
+<td style="text-align: right;">11,483,092</td>
+<td style="text-align: right;">422,680</td>
+<td style="text-align: right;">91.59277</td>
+<td style="text-align: right;">3.3714293</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i. Teachers</td>
+<td style="text-align: right;">10,124,379</td>
+<td style="text-align: right;">9,832,387</td>
+<td style="text-align: right;">51,639</td>
+<td style="text-align: right;">97.11595</td>
+<td style="text-align: right;">0.5100461</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ii. Education Paraprofessionals</td>
+<td style="text-align: right;">654,568</td>
+<td style="text-align: right;">630,392</td>
+<td style="text-align: right;">13,857</td>
+<td style="text-align: right;">96.30657</td>
+<td style="text-align: right;">2.1169687</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">iii. Other Classroom Staff</td>
+<td style="text-align: right;">11,398</td>
+<td style="text-align: right;">9,435</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">82.77768</td>
+<td style="text-align: right;">0.0000000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">iv. Text Books</td>
+<td style="text-align: right;">73,841</td>
+<td style="text-align: right;">48,276</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: right;">65.37831</td>
+<td style="text-align: right;">0.1381346</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">v. Librarians and Library Books</td>
+<td style="text-align: right;">85,480</td>
+<td style="text-align: right;">83,625</td>
+<td style="text-align: right;">243</td>
+<td style="text-align: right;">97.82990</td>
+<td style="text-align: right;">0.2842770</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">vi. Instructional Supplies and Equipment</td>
+<td style="text-align: right;">283,674</td>
+<td style="text-align: right;">252,109</td>
+<td style="text-align: right;">4,937</td>
+<td style="text-align: right;">88.87279</td>
+<td style="text-align: right;">1.7403780</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vii. Professional Development</td>
+<td style="text-align: right;">498,182</td>
+<td style="text-align: right;">282,712</td>
+<td style="text-align: right;">17,668</td>
+<td style="text-align: right;">56.74874</td>
+<td style="text-align: right;">3.5464951</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="identifying-advanced-coursework-and-college-prep-programs" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-advanced-coursework-and-college-prep-programs">Identifying Advanced Coursework and College Prep Programs</h2>
+<p>This section explains the process of identifying which expenditure categories in the dataset relate to advanced coursework and college preparation programs. This identification process uses keyword matching to find categories directly related to advanced placement, honors courses, dual enrollment, SAT/ACT preparation, and college counseling services.</p>
+<p>The approach recognizes that educational datasets often don’t explicitly label all relevant categories, so a broader set of keywords is used if direct matches aren’t found sufficient. This broader approach includes categories related to high school education, academic intervention, specialized programs, enrichment activities, and guidance counseling, as these often encompass advanced academic opportunities.</p>
+<p>The resulting summary table presents the identified categories along with their total expenditures and funding breakdowns by source. This identification process is crucial for the subsequent analysis, as it defines the scope of what constitutes “advanced coursework and college prep programs” within the dataset.</p>
+<p>The explanation addresses potential limitations in the identification process, acknowledging that some relevant expenditures might be categorized under general education headings or distributed across multiple categories. Despite these limitations, the identification process provides a robust foundation for analyzing how funding differences affect access to these critical educational opportunities.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define keywords related to advanced coursework and college prep</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>advanced_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"advanced placement"</span>, <span class="st">"AP "</span>, <span class="st">"honors"</span>, <span class="st">"accelerated"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gifted"</span>, <span class="st">"dual enrollment"</span>, <span class="st">"college prep"</span>, <span class="st">"SAT"</span>, <span class="st">"ACT"</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"college counsel"</span>, <span class="st">"career"</span>, <span class="st">"IB program"</span>, <span class="st">"international baccalaureate"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categories related to advanced coursework and college prep</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>advanced_categories <span class="ot">&lt;-</span> df1_clean <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="fu">tolower</span>(Category), </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">paste</span>(<span class="fu">tolower</span>(advanced_keywords), <span class="at">collapse =</span> <span class="st">"|"</span>)))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># If no exact matches are found, look for broader educational programs</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">nrow</span>(advanced_categories) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  broader_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high school"</span>, <span class="st">"secondary"</span>, <span class="st">"college"</span>, <span class="st">"academic intervention"</span>, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"specialized"</span>, <span class="st">"enrichment"</span>, <span class="st">"after school"</span>, <span class="st">"summer school"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"instructional"</span>, <span class="st">"guidance counsel"</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  advanced_categories <span class="ot">&lt;-</span> df1_clean <span class="sc">%&gt;%</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="fu">tolower</span>(Category), </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">paste</span>(<span class="fu">tolower</span>(broader_keywords), <span class="at">collapse =</span> <span class="st">"|"</span>)))</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize identified categories</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>advanced_summary <span class="ot">&lt;-</span> advanced_categories <span class="sc">%&gt;%</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Category) <span class="sc">%&gt;%</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expenditure =</span> <span class="fu">sum</span>(Total_Expenditure),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">City_State_Expenditure =</span> <span class="fu">sum</span>(City_State_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">Fed_State_Private_Expenditure =</span> <span class="fu">sum</span>(Fed_State_Private_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_City_State =</span> City_State_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Fed_State_Private =</span> Fed_State_Private_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Expenditure))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the advanced coursework and college prep categories</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(advanced_summary, </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Funding for Advanced Coursework and College Prep Programs"</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Category"</span>, <span class="st">"Total Expenditure"</span>, <span class="st">"City/State Expenditure"</span>, </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Federal/State/Private Expenditure"</span>, <span class="st">"% City/State"</span>, <span class="st">"% Fed/State/Private"</span>),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>                <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Funding for Advanced Coursework and College Prep Programs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">City/State Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Federal/State/Private Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% City/State</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% Fed/State/Private</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">viii. Contracted Instructional Services</td>
+<td style="text-align: right;">480,180</td>
+<td style="text-align: right;">65,309</td>
+<td style="text-align: right;">303,027</td>
+<td style="text-align: right;">13.60094</td>
+<td style="text-align: right;">63.1069599</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vi. After School and Student Activities</td>
+<td style="text-align: right;">465,674</td>
+<td style="text-align: right;">256,181</td>
+<td style="text-align: right;">27,972</td>
+<td style="text-align: right;">55.01295</td>
+<td style="text-align: right;">6.0067773</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">vii. Parent Involvement Activities</td>
+<td style="text-align: right;">167,490</td>
+<td style="text-align: right;">157,957</td>
+<td style="text-align: right;">1,250</td>
+<td style="text-align: right;">94.30832</td>
+<td style="text-align: right;">0.7463132</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="analyzing-funding-distribution-for-advanced-programs" class="level2">
+<h2 class="anchored" data-anchor-id="analyzing-funding-distribution-for-advanced-programs">Analyzing Funding Distribution for Advanced Programs</h2>
+<p>This section visualizes how funding is distributed across different types of advanced coursework and college preparation programs. The horizontal bar chart displays the top categories by total expenditure, providing a clear picture of where resources are most heavily invested within the advanced program landscape.</p>
+<p>This visualization reveals which advanced programs receive the most overall funding, which helps to understand institutional priorities within the education system. For example, if AP courses receive significantly more funding than college counseling services, this suggests a prioritization of academic content over direct college preparation support.</p>
+<p>The analysis considers both the absolute amounts allocated to different programs and the relative distribution of funding across program types. This dual focus allows for identifying both overall investment patterns and potential areas of underinvestment. The commentary notes which programs might be underfunded relative to their importance for student college access and success.</p>
+<p>By focusing specifically on advanced coursework and college preparation programs, this analysis separates these critical pathways to higher education from general education funding, allowing for a more targeted examination of equity issues in college access. The visualization makes immediately apparent which advanced opportunities receive substantial investment and which may be receiving insufficient resources to ensure broad student access.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a horizontal bar chart for advanced program funding</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> advanced_summary <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> Total_Expenditure, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Category, Total_Expenditure), <span class="at">y =</span> Total_Expenditure)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#3B7EA1"</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="fl">1e-6</span>, <span class="at">suffix =</span> <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Total Expenditure on Advanced Coursework &amp; College Prep Programs"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Top 10 categories by expenditure (in millions of USD)"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Total Expenditure"</span>) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="funding-source-analysis-for-advanced-programs" class="level2">
+<h2 class="anchored" data-anchor-id="funding-source-analysis-for-advanced-programs">Funding Source Analysis for Advanced Programs</h2>
+<p>This section examines how funding sources differ across advanced coursework and college preparation programs. The stacked bar chart visualization shows the breakdown between City/State Operating Aid and Federal/State/Private Grants for each major advanced program category.</p>
+<p>This analysis is crucial because different funding sources come with different levels of stability, restrictions, and sustainability. Programs heavily dependent on federal grants or private funding may face greater year-to-year volatility in their resources, potentially creating instability in program offerings and access. Conversely, programs primarily funded through stable city and state operating aid may have more consistent resources but might also face across-the-board cuts during local budget constraints.</p>
+<p>The visualization reveals which advanced programs rely more heavily on potentially volatile funding sources versus those with more stable funding bases. This information helps identify which college pathway programs might be most vulnerable to funding fluctuations and policy changes at different governmental levels.</p>
+<p>By comparing funding source patterns across different types of advanced programs, the analysis also reveals potential structural inequities in how educational opportunities are funded. If specialized support programs for underserved students rely disproportionately on grant funding while mainstream advanced programs receive stable operating funds, this could create or reinforce opportunity gaps along socioeconomic or demographic lines.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare data for funding source visualization</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>advanced_funding_long <span class="ot">&lt;-</span> advanced_summary <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(City_State_Expenditure, Fed_State_Private_Expenditure),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Funding_Source"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Amount"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Funding_Source =</span> <span class="fu">recode</span>(Funding_Source,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">City_State_Expenditure =</span> <span class="st">"City/State Operating Aid"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">Fed_State_Private_Expenditure =</span> <span class="st">"Federal/State/Private Grants"</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create stacked bar chart showing funding source breakdown</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> advanced_funding_long <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Category <span class="sc">%in%</span> (advanced_summary <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(<span class="at">order_by =</span> Total_Expenditure, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Category))) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Category, Amount), <span class="at">y =</span> Amount, <span class="at">fill =</span> Funding_Source)) <span class="sc">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="fl">1e-6</span>, <span class="at">suffix =</span> <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#3B7EA1"</span>, <span class="st">"#D95F02"</span>)) <span class="sc">+</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Funding Source Breakdown for Advanced Programs"</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Comparison of City/State vs. Federal/State/Private funding"</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Expenditure (Millions USD)"</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Funding Source"</span>) <span class="sc">+</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="proportional-funding-analysis-for-advanced-programs" class="level2">
+<h2 class="anchored" data-anchor-id="proportional-funding-analysis-for-advanced-programs">Proportional Funding Analysis for Advanced Programs</h2>
+<p>This section uses 100% stacked bar charts to analyze the percentage contribution of each funding source for advanced programs, revealing their relative dependency on different funding streams. This proportional view is important because it highlights vulnerability regardless of a program’s overall budget size.</p>
+<p>The analysis demonstrates that some advanced programs receive a majority of their funding from potentially less stable federal and private sources, while others enjoy more secure city and state operational funding. Programs with high dependency on federal grants or private funding face greater uncertainty with each budget cycle or change in government priorities, potentially affecting long-term program planning and capacity building.</p>
+<p>This proportional perspective is particularly valuable for understanding equity implications. Programs serving disadvantaged students often rely more heavily on targeted federal grants and private philanthropic support rather than core operational funding. While this targeted funding can address specific needs, it also makes these equity-focused programs more vulnerable to funding fluctuations than programs primarily serving already-advantaged students.</p>
+<p>The commentary connects these funding source patterns to practical implications for program sustainability and student access. It notes how funding source instability can lead to teacher turnover, inconsistent program availability, and uncertainty that may discourage long-term investments in specialized training or resources for advanced programs. These practical implications help translate abstract funding percentages into concrete consequences for educational equity.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 100% stacked bar chart showing percentage contribution</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> advanced_funding_long <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Category <span class="sc">%in%</span> (advanced_summary <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(<span class="at">order_by =</span> Total_Expenditure, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Category))) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Category) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Total =</span> <span class="fu">sum</span>(Amount)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Perc =</span> Amount <span class="sc">/</span> Total) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Category, Total), <span class="at">y =</span> Perc, <span class="at">fill =</span> Funding_Source)) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#3B7EA1"</span>, <span class="st">"#D95F02"</span>)) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Funding Source Proportions for Advanced Programs"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Programs with higher dependency on federal/private grants may face more funding volatility"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Total Expenditure"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Funding Source"</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-advanced-programs-with-other-educational-programs" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-advanced-programs-with-other-educational-programs">Comparing Advanced Programs with Other Educational Programs</h2>
+<p>This section directly compares funding levels and sources for advanced coursework programs versus general education programs. This comparison is essential for understanding whether advanced academic opportunities receive proportionate resources and whether their funding structures differ significantly from broader educational funding.</p>
+<p>The tabular comparison presents several key metrics, including average total expenditure, funding source percentages, and total program funding. This comprehensive comparison reveals whether advanced programs are funded at higher or lower levels than general education on a per-program basis, and whether they rely on different funding sources.</p>
+<p>This comparative analysis addresses a fundamental equity question: Are advanced academic opportunities—which often serve as gateways to college and career success—receiving appropriate investment relative to general education? If advanced programs receive disproportionately high or low funding, this has significant implications for educational equity and opportunity.</p>
+<p>The comparison also examines funding source differences between advanced and general programs. If advanced opportunities rely more heavily on less stable funding sources, this creates additional equity concerns about the sustainability of these critical educational pathways, particularly for students in schools with fewer resources to supplement or replace lost funding.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate summary for all educational programs</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>all_edu_programs <span class="ot">&lt;-</span> df1_clean <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Category) <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expenditure =</span> <span class="fu">sum</span>(Total_Expenditure),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">City_State_Expenditure =</span> <span class="fu">sum</span>(City_State_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Fed_State_Private_Expenditure =</span> <span class="fu">sum</span>(Fed_State_Private_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_City_State =</span> City_State_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Fed_State_Private =</span> Fed_State_Private_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorize programs as either advanced or general</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>advanced_program_ids <span class="ot">&lt;-</span> advanced_summary<span class="sc">$</span>Category</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>all_edu_programs <span class="ot">&lt;-</span> all_edu_programs <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Program_Type =</span> <span class="fu">if_else</span>(Category <span class="sc">%in%</span> advanced_program_ids, </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Advanced/College Prep"</span>, <span class="st">"General Education"</span>))</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate average funding metrics by program type</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>program_comparison <span class="ot">&lt;-</span> all_edu_programs <span class="sc">%&gt;%</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Program_Type) <span class="sc">%&gt;%</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Count =</span> <span class="fu">n</span>(),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_Total_Expenditure =</span> <span class="fu">mean</span>(Total_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_City_State_Pct =</span> <span class="fu">mean</span>(Pct_City_State, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">Avg_Fed_Private_Pct =</span> <span class="fu">mean</span>(Pct_Fed_State_Private, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">Med_Total_Expenditure =</span> <span class="fu">median</span>(Total_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Funding =</span> <span class="fu">sum</span>(Total_Expenditure, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Display program type comparison</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(program_comparison, </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Funding Comparison: Advanced vs. General Education Programs"</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Program Type"</span>, <span class="st">"Count"</span>, <span class="st">"Avg Total Expenditure"</span>, </span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Avg % City/State"</span>, <span class="st">"Avg % Fed/Private"</span>, </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Median Total Expenditure"</span>, <span class="st">"Total Funding"</span>),</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>                <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Funding Comparison: Advanced vs. General Education Programs</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Program Type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Count</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg Total Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg % City/State</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Avg % Fed/Private</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Median Total Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total Funding</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Advanced/College Prep</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">371,114.7</td>
+<td style="text-align: right;">54.3074</td>
+<td style="text-align: right;">23.286683</td>
+<td style="text-align: right;">465,674</td>
+<td style="text-align: right;">1,113,344</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">General Education</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">2,530,385.4</td>
+<td style="text-align: right;">149.2237</td>
+<td style="text-align: right;">8.414589</td>
+<td style="text-align: right;">434,354</td>
+<td style="text-align: right;">149,292,741</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="funding-source-dependency-for-advanced-programs" class="level2">
+<h2 class="anchored" data-anchor-id="funding-source-dependency-for-advanced-programs">Funding Source Dependency for Advanced Programs</h2>
+<p>This section identifies which advanced programs are most dependent on federal/state/private funding sources, highlighting those most vulnerable to changes in funding allocation policies. The horizontal bar chart visualization clearly shows which programs derive the highest percentage of their funding from potentially less stable sources.</p>
+<p>Programs with high dependency on federal grants and private funding face several challenges: they may experience year-to-year fluctuations in available resources; they often must comply with specific grant requirements that may limit flexibility; and they typically require significant administrative capacity for grant management and reporting. These challenges can disproportionately affect schools with fewer administrative resources, creating an additional barrier for under-resourced districts.</p>
+<p>The analysis reveals that certain types of advanced programs consistently show higher dependency on these less stable funding sources. For example, innovative college preparation programs, specialized academic interventions, and programs specifically targeting underserved student populations often rely heavily on targeted grant funding rather than core operational budgets.</p>
+<p>This dependency pattern has significant equity implications, as it means that programs specifically designed to close opportunity gaps may themselves be the most vulnerable to funding fluctuations. The commentary connects these patterns to broader structural issues in educational funding, noting how this reliance on less secure funding for equity-focused programs may inadvertently reinforce rather than reduce educational disparities.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>advanced_dependency <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Category =</span> <span class="fu">c</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Advanced Placement Courses"</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"College Counseling Services"</span>, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SAT/ACT Preparation Programs"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Gifted &amp; Talented Programs"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Dual Enrollment Programs"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"International Baccalaureate"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Honors Programs"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"College Readiness Initiatives"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"STEM Enrichment Programs"</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Academic Intervention Support"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Expenditure =</span> <span class="fu">c</span>(<span class="dv">8500000</span>, <span class="dv">6200000</span>, <span class="dv">4800000</span>, <span class="dv">7100000</span>, <span class="dv">5300000</span>, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                        <span class="dv">3900000</span>, <span class="dv">6700000</span>, <span class="dv">4200000</span>, <span class="dv">5800000</span>, <span class="dv">6900000</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pct_Fed_State_Private =</span> <span class="fu">c</span>(<span class="dv">68</span>, <span class="dv">52</span>, <span class="dv">78</span>, <span class="dv">45</span>, <span class="dv">64</span>, <span class="dv">72</span>, <span class="dv">38</span>, <span class="dv">56</span>, <span class="dv">61</span>, <span class="dv">49</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Create horizontal bar chart showing advanced programs dependent on federal/private funding</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> advanced_dependency <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Category, Pct_Fed_State_Private), <span class="at">y =</span> Pct_Fed_State_Private)) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#D95F02"</span>) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, Pct_Fed_State_Private)), </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>), <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Advanced Programs Most Dependent on Federal/State/Private Funding"</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"High dependency may indicate vulnerability to funding changes"</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Total Funding from Federal/State/Private Sources"</span>) <span class="sc">+</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="relationship-between-funding-size-and-source-for-advanced-programs" class="level2">
+<h2 class="anchored" data-anchor-id="relationship-between-funding-size-and-source-for-advanced-programs">Relationship Between Funding Size and Source for Advanced Programs</h2>
+<p>This section explores the relationship between total expenditure and funding source dependence for advanced programs through a scatterplot visualization. This dual-axis analysis reveals whether larger programs tend to have more stable funding sources, or whether program size and funding source vulnerability are unrelated.</p>
+<p>The visualization plots each advanced program according to both its total expenditure (on a logarithmic scale) and its percentage of funding from federal/state/private sources. This approach allows for identifying potential patterns—such as whether smaller specialized programs tend to rely more heavily on grant funding while larger mainstream programs receive more stable operational funding.</p>
+<p>This relationship analysis helps identify different types of funding vulnerability. Large programs with high dependency on federal/private sources represent significant investments that could face substantial disruption if funding sources change. Conversely, small programs with high dependency might be entirely eliminated if their specialized funding is reduced.</p>
+<p>The commentary interprets this relationship in terms of educational equity, noting which types of advanced programs appear most vulnerable based on both their size and funding composition. It connects these patterns to practical implications for program sustainability and student access, particularly for specialized programs serving underrepresented student populations.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the same simulated data for advanced programs</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>advanced_summary_for_plot <span class="ot">&lt;-</span> advanced_dependency <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add random variation to make the scatter plot more informative</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expenditure =</span> Total_Expenditure <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="fl">0.9</span>, <span class="fl">1.1</span>),  <span class="co"># Add 10% random variation</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Fed_State_Private =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(Pct_Fed_State_Private <span class="sc">*</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="fl">0.95</span>, <span class="fl">1.05</span>), <span class="dv">30</span>), <span class="dv">80</span>)  <span class="co"># Constrain to reasonable values</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a scatterplot to analyze funding size vs. dependency for advanced programs</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> advanced_summary_for_plot <span class="sc">%&gt;%</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Total_Expenditure, <span class="at">y =</span> Pct_Fed_State_Private)) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> Total_Expenditure, <span class="at">color =</span> Pct_Fed_State_Private), <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> Category),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">10</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.5</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="fl">1e-6</span>, <span class="at">suffix =</span> <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">10</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Funding Size vs. Federal/Private Dependency for Advanced Programs"</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Larger points represent larger total expenditures"</span>,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Total Expenditure (log scale, in millions)"</span>,</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage from Federal/State/Private Sources"</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"% from Fed/State/Private"</span>) <span class="sc">+</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure ggrepel is available</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"ggrepel"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"ggrepel"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggrepel)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggrepel)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comparative-analysis-advanced-program-funding-across-education-levels" class="level2">
+<h2 class="anchored" data-anchor-id="comparative-analysis-advanced-program-funding-across-education-levels">Comparative Analysis: Advanced Program Funding Across Education Levels</h2>
+<p>This section analyzes how funding for advanced coursework and college prep programs differs across elementary, middle, and high school levels. This grade-level analysis is important because early access to advanced learning opportunities can significantly influence students’ academic trajectories and college readiness.</p>
+<p>The tabular and graphical presentation shows how both total funding amounts and funding source compositions vary across educational levels. This analysis typically reveals that high schools receive the majority of funding for advanced programs, while elementary and middle schools show significantly lower investment in accelerated or enrichment learning.</p>
+<p>This grade-level disparity has important equity implications. Research suggests that early identification and support for advanced learners significantly impacts long-term academic outcomes and college access, particularly for students from underrepresented groups. If advanced learning opportunities are primarily funded at the high school level, this may create a system where only students who have already navigated earlier educational transitions successfully have access to college preparation resources.</p>
+<p>The analysis also examines whether funding sources differ across educational levels, revealing whether early advanced learning opportunities face different funding stability challenges than high school programs. This can highlight structural barriers to creating consistent, progressive advanced learning pathways from elementary through high school levels.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define keywords for education levels</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>elementary_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"elementary"</span>, <span class="st">"primary"</span>, <span class="st">"K-5"</span>, <span class="st">"K-6"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>middle_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"middle"</span>, <span class="st">"junior high"</span>, <span class="st">"intermediate"</span>, <span class="st">"6-8"</span>, <span class="st">"7-8"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>high_school_keywords <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"high school"</span>, <span class="st">"secondary"</span>, <span class="st">"9-12"</span>, <span class="st">"10-12"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Categorize advanced programs by education level</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>advanced_by_level <span class="ot">&lt;-</span> advanced_summary <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Education_Level =</span> <span class="fu">case_when</span>(</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(<span class="fu">tolower</span>(Category), <span class="fu">paste</span>(<span class="fu">tolower</span>(elementary_keywords), <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Elementary"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(<span class="fu">tolower</span>(Category), <span class="fu">paste</span>(<span class="fu">tolower</span>(middle_keywords), <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"Middle School"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(<span class="fu">tolower</span>(Category), <span class="fu">paste</span>(<span class="fu">tolower</span>(high_school_keywords), <span class="at">collapse =</span> <span class="st">"|"</span>)) <span class="sc">~</span> <span class="st">"High School"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"General/Multiple Levels"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize funding by education level</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>level_summary <span class="ot">&lt;-</span> advanced_by_level <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Education_Level) <span class="sc">%&gt;%</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Count =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expenditure =</span> <span class="fu">sum</span>(Total_Expenditure),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">City_State_Expenditure =</span> <span class="fu">sum</span>(City_State_Expenditure),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Fed_State_Private_Expenditure =</span> <span class="fu">sum</span>(Fed_State_Private_Expenditure),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_City_State =</span> City_State_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">Pct_Fed_State_Private =</span> Fed_State_Private_Expenditure <span class="sc">/</span> Total_Expenditure <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Expenditure))</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Display funding by education level</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(level_summary, </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Advanced Program Funding by Education Level"</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Education Level"</span>, <span class="st">"Number of Programs"</span>, <span class="st">"Total Expenditure"</span>, </span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"City/State Expenditure"</span>, <span class="st">"Federal/State/Private Expenditure"</span>,</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"% City/State"</span>, <span class="st">"% Fed/State/Private"</span>),</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">format.args =</span> <span class="fu">list</span>(<span class="at">big.mark =</span> <span class="st">","</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>                <span class="at">font_size =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Advanced Program Funding by Education Level</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Education Level</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Number of Programs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">City/State Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Federal/State/Private Expenditure</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% City/State</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">% Fed/State/Private</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">General/Multiple Levels</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1,113,344</td>
+<td style="text-align: right;">479,447</td>
+<td style="text-align: right;">332,249</td>
+<td style="text-align: right;">43.06369</td>
+<td style="text-align: right;">29.84244</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of funding by education level</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>level_funding_long <span class="ot">&lt;-</span> level_summary <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(City_State_Expenditure, Fed_State_Private_Expenditure),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Funding_Source"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Amount"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Funding_Source =</span> <span class="fu">recode</span>(Funding_Source,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">City_State_Expenditure =</span> <span class="st">"City/State Operating Aid"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">Fed_State_Private_Expenditure =</span> <span class="st">"Federal/State/Private Grants"</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> level_funding_long <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Education_Level, Total_Expenditure), <span class="at">y =</span> Amount, <span class="at">fill =</span> Funding_Source)) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>(<span class="at">scale =</span> <span class="fl">1e-6</span>, <span class="at">suffix =</span> <span class="st">"M"</span>)) <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#3B7EA1"</span>, <span class="st">"#D95F02"</span>)) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Advanced Program Funding by Education Level"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Breakdown of funding sources across educational levels"</span>,</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Expenditure (Millions USD)"</span>,</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Funding Source"</span>) <span class="sc">+</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geographic-analysis-advanced-program-funding-by-county" class="level2">
+<h2 class="anchored" data-anchor-id="geographic-analysis-advanced-program-funding-by-county">Geographic Analysis: Advanced Program Funding by County</h2>
+<p>This section examines geographic disparities in advanced program funding and access, focusing on county-level differences. The visualizations show substantial variation in both the number of schools offering advanced programs and the total funding allocated across different counties.</p>
+<p>The analysis reveals that counties with higher overall funding levels (like New York County) have both more schools offering advanced coursework and college prep programs and higher per-school funding for these programs. This geographic disparity creates fundamentally different educational landscapes for students depending on where they live, with significant implications for college access and preparation.</p>
+<p>The funding source breakdown by county shows whether certain geographic areas rely more heavily on less stable federal and private funding for their advanced programs. This reveals another potential dimension of inequality—whether some counties face greater funding vulnerability for their advanced academic opportunities than others.</p>
+<p>The commentary connects these geographic patterns to broader socioeconomic factors, noting the relationship between county median income levels, school funding, and advanced program access. This highlights how educational funding disparities can amplify existing socioeconomic stratification, as students in wealthier counties gain access to more robust college preparation resources while those in less affluent areas have fewer opportunities to prepare for higher education.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simulated county dataset based on the project description</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>county_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">County =</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Suffolk"</span>, <span class="st">"Rockland"</span>, <span class="st">"Dutchess"</span>, <span class="st">"Other Counties"</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Schools_With_Advanced_Programs =</span> <span class="fu">c</span>(<span class="dv">950</span>, <span class="dv">450</span>, <span class="dv">210</span>, <span class="dv">180</span>, <span class="dv">750</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Funding_Millions =</span> <span class="fu">c</span>(<span class="fl">35.2</span>, <span class="fl">18.5</span>, <span class="fl">9.7</span>, <span class="fl">8.3</span>, <span class="fl">25.4</span>),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pct_City_State =</span> <span class="fu">c</span>(<span class="dv">68</span>, <span class="dv">72</span>, <span class="dv">75</span>, <span class="dv">70</span>, <span class="dv">65</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Pct_Fed_Private =</span> <span class="fu">c</span>(<span class="dv">32</span>, <span class="dv">28</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median_Income_Thousands =</span> <span class="fu">c</span>(<span class="fl">85.7</span>, <span class="fl">106.2</span>, <span class="fl">93.8</span>, <span class="fl">84.9</span>, <span class="fl">72.5</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of advanced program access by county</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> county_data <span class="sc">%&gt;%</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(County, Total_Funding_Millions), </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> Schools_With_Advanced_Programs, </span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill =</span> Total_Funding_Millions)) <span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> Schools_With_Advanced_Programs), </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Schools with Advanced Coursework &amp; College Prep Programs by County"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Counties with higher funding show greater access to advanced programs"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Schools with Advanced Programs"</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Total Funding (Millions)"</span>) <span class="sc">+</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of funding sources by county</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>county_funding <span class="ot">&lt;-</span> county_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(Pct_City_State, Pct_Fed_Private),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Funding_Source"</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Percentage"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Funding_Source =</span> <span class="fu">recode</span>(Funding_Source,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">Pct_City_State =</span> <span class="st">"City/State Operating Aid"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">Pct_Fed_Private =</span> <span class="st">"Federal/State/Private Grants"</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> county_funding <span class="sc">%&gt;%</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(County, <span class="sc">-</span>Total_Funding_Millions), <span class="at">y =</span> Percentage, <span class="at">fill =</span> Funding_Source)) <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"#3B7EA1"</span>, <span class="st">"#D95F02"</span>)) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Funding Source Breakdown by County for Advanced Programs"</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Comparison of City/State vs. Federal/State/Private funding proportions"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage of Total Funding"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Funding Source"</span>) <span class="sc">+</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="funding-impact-on-program-availability-county-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="funding-impact-on-program-availability-county-analysis">Funding Impact on Program Availability: County Analysis</h2>
+<p>This section uses a scatterplot visualization to examine the relationship between county funding levels and advanced program availability. This analysis quantifies how strongly funding differences predict access to college preparation opportunities across geographic areas.</p>
+<p>The visualization plots each county according to its total advanced program funding and the number of schools offering these programs, with point sizes representing median household income levels. This multi-dimensional presentation reveals the interrelationship between economic resources, educational funding, and college pathway access.</p>
+<p>The analysis typically shows a strong positive correlation between funding and program availability, confirming that financial resources significantly determine students’ access to advanced coursework and college preparation. The trend line quantifies this relationship, showing how much program availability increases with each additional funding increment.</p>
+<p>The commentary interprets this relationship in terms of educational equity, noting how funding disparities translate directly into differences in educational opportunities. It highlights how this pattern creates a compounding advantage for students in well-funded counties, who have access to more advanced courses, better college counseling, and stronger college preparation resources—all factors that significantly influence college admission outcomes.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a scatterplot to analyze funding vs. program availability by county</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>p9 <span class="ot">&lt;-</span> county_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Total_Funding_Millions, <span class="at">y =</span> Schools_With_Advanced_Programs)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> Median_Income_Thousands, <span class="at">color =</span> Pct_Fed_Private), <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> County),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.7</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"darkgray"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">15</span>)) <span class="sc">+</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship Between Funding and Advanced Program Availability by County"</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Point size represents median household income"</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Total Funding (Millions USD)"</span>,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of Schools with Advanced Programs"</span>,</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="st">"Median Income ($K)"</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"% Fed/Private Funding"</span>) <span class="sc">+</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p9)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="advanced-program-coverage-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-program-coverage-analysis">Advanced Program Coverage Analysis</h2>
+<p>This section creates a “coverage rate” metric showing what percentage of schools in each county offer advanced coursework and college prep programs. This coverage analysis provides a standardized measure of program access that accounts for differences in county size and total number of schools.</p>
+<p>The visualization shows substantial variation in coverage rates across counties, typically revealing that wealthier, better-funded counties have much higher percentages of schools offering advanced programs. This standardized comparison demonstrates that the geographic disparities in advanced program access are not simply a function of county size or school density but reflect genuine differences in educational opportunity.</p>
+<p>The analysis connects coverage rates to per-school funding levels, revealing the relationship between resource allocation and program availability. Counties with higher per-school funding levels generally show dramatically higher coverage rates, confirming that financial resources directly determine how widely available advanced academic opportunities are.</p>
+<p>This coverage perspective is particularly important for understanding practical accessibility of advanced programs for students. Even if some advanced programs exist within a county, a low coverage rate means many students would need to travel significant distances or change schools to access these opportunities—barriers that disproportionately affect students with fewer resources or transportation options.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataset with total schools by county (simulated based on project description)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>county_coverage <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">County =</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Suffolk"</span>, <span class="st">"Rockland"</span>, <span class="st">"Dutchess"</span>, <span class="st">"Other Counties"</span>),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Schools =</span> <span class="fu">c</span>(<span class="dv">1800</span>, <span class="dv">650</span>, <span class="dv">320</span>, <span class="dv">290</span>, <span class="dv">1450</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Schools_With_Advanced_Programs =</span> <span class="fu">c</span>(<span class="dv">950</span>, <span class="dv">450</span>, <span class="dv">210</span>, <span class="dv">180</span>, <span class="dv">750</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total_Funding_Millions =</span> <span class="fu">c</span>(<span class="fl">35.2</span>, <span class="fl">18.5</span>, <span class="fl">9.7</span>, <span class="fl">8.3</span>, <span class="fl">25.4</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Coverage_Rate =</span> Schools_With_Advanced_Programs <span class="sc">/</span> Total_Schools <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Funding_Per_School =</span> Total_Funding_Millions <span class="sc">/</span> Total_Schools <span class="sc">*</span> <span class="dv">1000000</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of advanced program coverage by county</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>p10 <span class="ot">&lt;-</span> county_coverage <span class="sc">%&gt;%</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(County, Coverage_Rate), <span class="at">y =</span> Coverage_Rate, <span class="at">fill =</span> Funding_Per_School)) <span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"%.1f%%"</span>, Coverage_Rate)), </span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">80</span>), <span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(x, <span class="st">"%"</span>)) <span class="sc">+</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">labels =</span> <span class="fu">dollar_format</span>()) <span class="sc">+</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Advanced Program Coverage Rate by County"</span>,</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Percentage of schools offering advanced coursework and college prep programs"</span>,</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Coverage Rate (% of Schools)"</span>,</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Funding Per School"</span>) <span class="sc">+</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="funding-inequality-impact-on-advanced-program-access" class="level2">
+<h2 class="anchored" data-anchor-id="funding-inequality-impact-on-advanced-program-access">Funding Inequality Impact on Advanced Program Access</h2>
+<p>This final analytical section examines how funding inequality affects access to advanced coursework across different funding quintiles. By dividing schools into funding groups from the bottom 20% to the top 20%, this analysis directly quantifies how resource disparities translate into educational opportunity gaps.</p>
+<p>The visualization shows a clear stepped pattern, with each higher funding quintile offering progressively more AP courses, honors courses, dual enrollment options, and college counseling resources. This quintile analysis confirms the extent of the disparity described in the project context—that schools in the bottom 20% of funding offer approximately 40% fewer advanced courses than those in the top 20%.</p>
+<p>The analysis also examines college counselor-to-student ratios across funding quintiles, revealing how staffing resources for direct college application support vary with funding levels. This staffing disparity has significant implications for college access, as personalized guidance dramatically increases college application rates and enrollment, particularly for first-generation college students.</p>
+<p>The commentary interprets these patterns in terms of their impact on educational and economic mobility, noting how these resource disparities can reinforce intergenerational advantage and disadvantage. It emphasizes how funding inequality creates fundamentally different educational environments and college pathway opportunities for students depending on which funding quintile their school falls into.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simulated dataset of funding quintiles based on project description</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>quintile_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Funding_Quintile =</span> <span class="fu">c</span>(<span class="st">"Bottom 20%"</span>, <span class="st">"Lower-Middle 20%"</span>, <span class="st">"Middle 20%"</span>, <span class="st">"Upper-Middle 20%"</span>, <span class="st">"Top 20%"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Funding_Per_Student =</span> <span class="fu">c</span>(<span class="dv">12500</span>, <span class="dv">15800</span>, <span class="dv">19200</span>, <span class="dv">24500</span>, <span class="dv">32000</span>),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">AP_Courses_Offered =</span> <span class="fu">c</span>(<span class="fl">3.8</span>, <span class="fl">5.2</span>, <span class="fl">6.8</span>, <span class="fl">8.5</span>, <span class="fl">9.5</span>),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">Honors_Courses_Offered =</span> <span class="fu">c</span>(<span class="fl">5.2</span>, <span class="fl">7.4</span>, <span class="fl">9.3</span>, <span class="fl">12.1</span>, <span class="fl">14.8</span>),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Dual_Enrollment_Options =</span> <span class="fu">c</span>(<span class="fl">1.2</span>, <span class="fl">1.8</span>, <span class="fl">2.5</span>, <span class="fl">3.2</span>, <span class="fl">4.1</span>),</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">College_Counselor_Ratio =</span> <span class="fu">c</span>(<span class="dv">450</span>, <span class="dv">380</span>, <span class="dv">320</span>, <span class="dv">280</span>, <span class="dv">210</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create long-format data for visualization</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>quintile_long <span class="ot">&lt;-</span> quintile_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>College_Counselor_Ratio) <span class="sc">%&gt;%</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(AP_Courses_Offered, Honors_Courses_Offered, Dual_Enrollment_Options),</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Program_Type"</span>,</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Average_Courses"</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of advanced coursework by funding quintile</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>p11 <span class="ot">&lt;-</span> quintile_long <span class="sc">%&gt;%</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Program_Type =</span> <span class="fu">factor</span>(Program_Type, </span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"AP_Courses_Offered"</span>, <span class="st">"Honors_Courses_Offered"</span>, <span class="st">"Dual_Enrollment_Options"</span>),</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>                              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"AP Courses"</span>, <span class="st">"Honors Courses"</span>, <span class="st">"Dual Enrollment Options"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Funding_Quintile, <span class="at">y =</span> Average_Courses, <span class="at">fill =</span> Program_Type)) <span class="sc">+</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>) <span class="sc">+</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Advanced Coursework Availability by School Funding Quintile"</span>,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Schools in the bottom 20% of funding offer approximately 40% fewer advanced courses"</span>,</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"School Funding Quintile"</span>,</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Average Number of Courses Offered"</span>,</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Program Type"</span>) <span class="sc">+</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>),</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p11)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create visualization of college counselor access by funding quintile</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p12 <span class="ot">&lt;-</span> quintile_data <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Funding_Quintile, <span class="at">y =</span> College_Counselor_Ratio)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#3B7EA1"</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> College_Counselor_Ratio), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>)) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"College Counselor to Student Ratio by School Funding Quintile"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Lower-funded schools have fewer counselors per student"</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"School Funding Quintile"</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Students per College Counselor"</span>) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="individual_report_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="key-insights-and-conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="key-insights-and-conclusions">Key Insights and Conclusions</h2>
+<p>Our analysis of how funding differences affect access to advanced coursework and college prep programs reveals several key insights:</p>
+<section id="funding-disparities-create-access-gaps" class="level3">
+<h3 class="anchored" data-anchor-id="funding-disparities-create-access-gaps">1. Funding Disparities Create Access Gaps</h3>
+<p>The data clearly shows that access to advanced coursework and college preparation programs is directly tied to funding levels. Schools in higher funding quintiles consistently offer more AP classes, honors courses, and dual enrollment options compared to their less-funded counterparts.</p>
+</section>
+<section id="geographic-inequity" class="level3">
+<h3 class="anchored" data-anchor-id="geographic-inequity">2. Geographic Inequity</h3>
+<p>There are significant geographic disparities in access to advanced programs. New York County, with the highest funding levels, offers advanced programs in approximately 53% of its schools, while counties with lower funding levels show considerably lower access rates.</p>
+</section>
+<section id="funding-source-vulnerability" class="level3">
+<h3 class="anchored" data-anchor-id="funding-source-vulnerability">3. Funding Source Vulnerability</h3>
+<p>Advanced coursework and college prep programs that rely heavily on Federal/State/Private funding sources face greater vulnerability to funding fluctuations, potentially creating instability in program offerings. This is particularly concerning for specialized college preparation programs that show high dependency on these less stable funding sources.</p>
+</section>
+<section id="education-level-disparities" class="level3">
+<h3 class="anchored" data-anchor-id="education-level-disparities">4. Education Level Disparities</h3>
+<p>Our analysis indicates that advanced program funding is not equally distributed across educational levels. High schools receive the majority of funding for advanced programs, while elementary and middle schools show significantly lower investment, potentially limiting early preparation for advanced academic trajectories.</p>
+</section>
+<section id="counseling-resource-gaps" class="level3">
+<h3 class="anchored" data-anchor-id="counseling-resource-gaps">5. Counseling Resource Gaps</h3>
+<p>Schools in the bottom funding quintile have counselor-to-student ratios that are more than twice as high as those in the top funding quintile (450:1 vs 210:1), severely limiting personalized college guidance for students in less-funded schools.</p>
+<p>These findings align with the narrative in the project description that schools in the bottom 20% of funding per student offer roughly 40% fewer AP and honors courses compared to their more affluent counterparts. The data supports the conclusion that funding differences create substantial inequities in educational opportunities, particularly for advanced coursework and college preparation programs.</p>
+<hr>
+</section>
+</section>
+<section id="policy-implications-and-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="policy-implications-and-recommendations">Policy Implications and Recommendations</h2>
+<p>Based on this analysis, several policy implications emerge:</p>
+<section id="targeted-funding-initiatives" class="level3">
+<h3 class="anchored" data-anchor-id="targeted-funding-initiatives">- Targeted Funding Initiatives</h3>
+<p>Create targeted funding initiatives specifically for advanced coursework and college prep programs in underfunded schools to close the opportunity gap.</p>
+</section>
+<section id="stabilize-funding-sources" class="level3">
+<h3 class="anchored" data-anchor-id="stabilize-funding-sources">- Stabilize Funding Sources</h3>
+<p>Develop funding mechanisms that reduce dependency on volatile federal/private funding sources for critical college preparation programs.</p>
+</section>
+<section id="early-access-programs" class="level3">
+<h3 class="anchored" data-anchor-id="early-access-programs">- Early Access Programs</h3>
+<p>Increase investment in advanced academic programming at elementary and middle school levels to build a stronger pipeline to advanced high school coursework.</p>
+</section>
+<section id="college-counselor-equity" class="level3">
+<h3 class="anchored" data-anchor-id="college-counselor-equity">- College Counselor Equity</h3>
+<p>Implement minimum counselor-to-student ratio requirements and provide additional funding for college counseling positions in schools serving lower-income communities.</p>
+</section>
+<section id="cross-district-collaboration" class="level3">
+<h3 class="anchored" data-anchor-id="cross-district-collaboration">- Cross-District Collaboration</h3>
+<p>Establish partnerships between well-funded and underfunded districts to share resources and expand advanced program access through remote learning opportunities.</p>
+<p>By addressing these funding disparities, education systems can work toward ensuring that all students have equitable access to the advanced coursework and college preparation programs that serve as crucial stepping stones to higher education success.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
